@@ -1,8 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule, MatListModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TeaService } from './services/tea.service';
+import { TrackingService } from './services/tracking.service';
 
 @NgModule({
   declarations: [
@@ -10,9 +13,18 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
-  providers: [],
+  providers: [
+    TeaService,
+    TrackingService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
