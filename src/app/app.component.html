@@ -28,7 +28,7 @@
         Add
       </button>
     </div>
-    <button mat-button (click)="teaService.resetSession()">
+    <button mat-button (click)="teaService.resetSession()" *ngIf="(teaService.people$ | async)?.length > 0">
       <mat-icon matListIcon [inline]="true">settings_backup_restore</mat-icon>
       Reset sessions
     </button>
