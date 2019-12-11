@@ -6,6 +6,7 @@ import { MatToolbarModule, MatListModule, MatFormFieldModule, MatInputModule, Ma
 import { AppComponent } from './app.component';
 import { TeaService } from './services/tea.service';
 import { TrackingService } from './services/tracking.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { TrackingService } from './services/tracking.service';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatToolbarModule,
     MatListModule,
     MatFormFieldModule,

@@ -1,20 +1,28 @@
 <mat-toolbar>
   <span>Tea App</span>
 </mat-toolbar>
-<div class="app-container">
+<div class="container app-container">
   <mat-form-field class="name-input">
     <input
-      #name
+      [(ngModel)]="nameInput"
       matInput
       placeholder="Add team member"
-      (keyup.enter)="teaService.addPerson(name.value); name.value = ''"
+      (keyup.enter)="nameSubmit()"
     />
   </mat-form-field>
   
   <mat-list>
     <mat-list-item *ngFor="let person of teaService.people$ | async">
-      {{ person }}
+      <h5 matLine>{{ person.name }}</h5>
+      <p matLine>Total: {{ person.totalDrinks }} | Session: {{ person.sessionDrinks }}</p>
       <mat-icon matListIcon>person</mat-icon>
     </mat-list-item>
   </mat-list>
+
+  <button mat-raised-button color="primary" (click)="choosePerson()">
+    <ng-container *ngIf="!selectedPerson">Choose</ng-container>
+    <ng-container *ngIf="selectedPerson">Choose again</ng-container>
+  </button>
+  <button mat-button (click)="teaService.resetSession()">Reset session</button>
+  <div *ngIf="selectedPerson">{{ selectedPerson.name }}</div>
 </div>
