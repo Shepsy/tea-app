@@ -1,35 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Person } from '../interfaces/person.interface';
-import { fadeInItems } from '@angular/material';
+import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY } from '@angular/cdk/overlay/typings/overlay-directives';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeaService {
   people$: BehaviorSubject<Person[]> = new BehaviorSubject([]);
-  people: Person[] = [
-    {
-      name: 'Matt',
-      totalDrinks: 0,
-      sessionDrinks: 0,
-    },
-    {
-      name: 'Lindsay',
-      totalDrinks: 0,
-      sessionDrinks: 0,
-    },
-    {
-      name: 'Piers',
-      totalDrinks: 0,
-      sessionDrinks: 0,
-    },
-    {
-      name: 'Dave',
-      totalDrinks: 0,
-      sessionDrinks: 0,
-    }
-  ];
+  private people: Person[] = [];
+
+  private localStorageKey = 'people';
 
 
   constructor() {
@@ -37,11 +18,16 @@ export class TeaService {
   }
 
   /**
-   * Gets people in the team.
+   * Gets people in the team and emits them.
    *
    * This could look at local storage or reach out to a data provider via HTTP.
    */
-  private getPersons() {
+  private getPersons(): void {
+    // Attempt to fetch from localStorage.
+    const storedPersons = localStorage.getItem(this.localStorageKey);
+    if (storedPersons) {
+      this.people = JSON.parse(storedPersons);
+    }
     this.people$.next(this.people);
   }
 
@@ -67,6 +53,7 @@ export class TeaService {
 
     this.people.push(newPerson);
     this.people$.next(this.people);
+    this.storePeople();
     // The new person was added successfully.
     return true;
   }
@@ -76,11 +63,12 @@ export class TeaService {
    *
    * For now we're simply matching by string.
    */
-  public removePerson(name: string) {
-    const index = this.people.findIndex(person => person.name === name);
+  public removePerson(person: Person) {
+    const index = this.people.findIndex(p => p.name === person.name);
     if (index > -1) {
       this.people.splice(index, 1);
       this.people$.next(this.people);
+      this.storePeople();
     }
   }
 
@@ -107,6 +95,7 @@ export class TeaService {
       lowestPerson = lowestSessionPeople[Math.floor(Math.random() * lowestSessionPeople.length)];
     }
     this.incrementDrinks(lowestPerson);
+    this.storePeople();
     return lowestPerson;
   }
 
@@ -115,6 +104,7 @@ export class TeaService {
    */
   public resetSession() {
     this.people.forEach(person => person.sessionDrinks = 0);
+    this.storePeople();
   }
 
   /**
@@ -123,5 +113,12 @@ export class TeaService {
   private incrementDrinks(person: Person): void {
     person.sessionDrinks++;
     person.totalDrinks++;
+  }
+
+  /**
+   * Stores the list of people in local storage.
+   */
+  private storePeople() {
+    localStorage.setItem(this.localStorageKey, JSON.stringify(this.people));
   }
 }

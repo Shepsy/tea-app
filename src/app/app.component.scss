@@ -1,6 +1,54 @@
-.app-container {
+.tea-app {
     padding: 2rem 1rem;
+    &__people,
+    &__results {
+        margin-bottom: 2rem;
+    }
+
+    @media (min-width: 600px) {
+        display: flex;
+        &__people,
+        &__results {
+            width: 50%;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+    }
+
+    &__list {
+        margin-bottom: 1rem;
+    }
+
+    &__name-input {
+        width: calc(100% - 100px);
+        margin-right: 1rem;
+    }
+
+    &__choose {
+        margin-bottom: 1rem;
+    }
 }
-.name-input {
-    width: 100%;
+
+.person {
+    &__remove {
+        display: none;
+        order: 4;
+    }
+
+    &:hover, &:focus {
+        .person__remove {
+            display: block;
+        }
+    }
+}
+
+.selected-person {
+    padding: 2rem;
+    background: #f9f9f9;
+    text-align: center;
+
+    &__icon {
+        font-size: 4rem;
+        color: #555555;
+    }
 }
