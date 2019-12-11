@@ -37,8 +37,8 @@
   <div class="tea-app__results" *ngIf="(teaService.people$ | async)?.length > 0">
     <button class="tea-app__choose" mat-raised-button color="accent" (click)="choosePerson()">
       <mat-icon matListIcon [inline]="true">find_replace</mat-icon>
-      <ng-container *ngIf="!selectedPerson">Choose</ng-container>
-      <ng-container *ngIf="selectedPerson">Choose again</ng-container>
+      <ng-container *ngIf="!selectedPerson">Pick tea maker</ng-container>
+      <ng-container *ngIf="selectedPerson">Pick again</ng-container>
     </button>
     <div *ngIf="selectedPerson" class="selected-person">
       <div class="selected-person__icon">
