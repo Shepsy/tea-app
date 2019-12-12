@@ -2,8 +2,11 @@
   <span>The Tea Round Picker</span>
 </mat-toolbar>
 <div class="container tea-app">
-  <div class="tea-app__people"> 
-    <mat-list class="tea-app__list">
+  <div class="tea-app__people">
+    <p *ngIf="(teaService.people$ | async)?.length === 0">
+      Start by adding people to your team
+    </p>
+    <mat-list class="tea-app__list" *ngIf="(teaService.people$ | async)?.length > 0">
       <h3 mat-subheader>Team</h3>
       <mat-list-item *ngFor="let person of teaService.people$ | async" class="person">
         <h5 matLine>{{ person.name }}</h5>
@@ -46,8 +49,5 @@
       </div>
       <h2>{{ selectedPerson.name }}</h2>
     </div>
-  </div>
-  <div class="tea-app__results" *ngIf="(teaService.people$ | async)?.length === 0">
-    Start by adding people to your team
   </div>
 </div>

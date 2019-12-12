@@ -1,16 +1,29 @@
 import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { TeaService } from './services/tea.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatListModule, MatToolbarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
       declarations: [
         AppComponent
       ],
+      imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatListModule,
+        MatButtonModule,
+        MatToolbarModule
+      ],
+      providers: [
+        TeaService
+      ]
     }).compileComponents();
   }));
 
@@ -20,16 +33,35 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'tea-app'`, () => {
+  it(`should have as nameInput ''`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('tea-app');
+    expect(app.nameInput).toEqual('');
   });
 
-  it('should render title in a h1 tag', () => {
+  it(`should reset nameInput`, () => {
     const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to tea-app!');
+    app.nameInput = 'abc';
+    expect(app.nameInput).toEqual('abc');
+    fixture.detectChanges();
+    app.nameSubmit();
+    fixture.detectChanges();
+    expect(app.nameInput).toEqual('');
   });
+
+  it(`should add name to TeaService`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.nameInput).toEqual('');
+    app.nameInput = 'abc';
+    fixture.detectChanges();
+    app.nameSubmit();
+    fixture.detectChanges();
+    app.teaService.people$.subscribe(
+      people => expect(people.length).toEqual(1)
+    );
+  });
+
 });
