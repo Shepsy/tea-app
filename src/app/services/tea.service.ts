@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Person } from '../interfaces/person.interface';
+import { TrackingService } from './tracking.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class TeaService {
   private localStorageKey = 'people';
 
 
-  constructor() {
+  constructor(
+    private trackingService: TrackingService
+  ) {
     this.getPersons();
   }
 
@@ -95,6 +98,15 @@ export class TeaService {
     }
     this.incrementDrinks(lowestPerson);
     this.storePeople();
+
+    // Log an event.
+    this.trackingService.logEvent({
+      category: 'selection',
+      action: 'choose-person',
+      label: lowestPerson.name,
+      value: lowestPerson.sessionDrinks
+    });
+
     return lowestPerson;
   }
 
